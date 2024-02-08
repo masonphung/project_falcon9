@@ -24,4 +24,4 @@
 
 ## NOTES
 - This project is a part of the IBM Data Science Specialization course.
-- The notebooks, dashboard app were further developed by Mason Phung.
+- The notebooks, dashboard app were further developed by myself.
