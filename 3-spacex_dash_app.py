@@ -35,22 +35,72 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = html.Div(
     [
         dbc.Row([ # Row 1 - Name of the dashboard
-            dbc.Card(
-                dbc.Col(html.H1(
-                    'SpaceX Launch Records Dashboard',
-                    style = {
-                        'textAlign': 'center',
-                        'font-size': 40
-                    }
-                ))
-            )
-        ],
-        style={
-            'margin': '15px',
-            'margin-bottom': '20px',
-        }
-),
-        dbc.Row([ # Row 2 - Statistics
+            dbc.CardGroup([
+                dbc.Card([
+                    dbc.Col([
+                        html.Header(
+                            'SpaceX Launch Records Dashboard',
+                            style = {
+                                'textAlign': 'center',
+                                'font-size': '25px',
+                            }
+                        ),
+                    ])
+                ]),
+                dbc.Card([
+                    dbc.Col([
+                        html.Header("Select site"),
+                        html.Div(
+                                [
+                                    dcc.Dropdown(
+                                        id = 'site-dropdown',
+                                            options = [
+                                            {'label': 'All Sites', 'value': 'ALL'}
+                                        ]+
+                                        [
+                                            {'label': i, 'value': i} for i in spacex_df['LaunchSite'].unique()
+                                        ],
+                                        value = 'ALL',
+                                        placeholder = 'Select a launch site',
+                                        searchable = True
+                                    )
+                                ],
+                                style = {
+                                    'padding': '3%',
+                                    'font-size': 20
+                                }
+                        ),
+                    ])
+                ]),
+                dbc.Card([
+                    dbc.Col([
+                            html.Header("Select year"),
+                            html.Div([
+                                dcc.RangeSlider(
+                                    id='year-slider',
+                                    min = 2010, max = 2020, step = 1,
+                                    value = [min_year, max_year],
+                                    marks = {
+                                        2010: {'label': '2010', 'style': {'color': '#77b0b1'}},
+                                        **{i: {'label': str(i), 'value': i} for i in range(2011, 2020, 1)},
+                                        2020: {'label': '2020', 'style': {'color': '#fd7e14'}}
+                                    },
+                                    tooltip = {
+                                        "placement": "bottom",
+                                        "always_visible": True
+                                    }
+                                )
+                            ],
+                                style = {
+                                    'padding': '3%',
+                                    'font-size': 20
+                                }
+                            )
+                    ])            
+                ])
+            ])
+        ]),
+        dbc.Row([ # Row 2 - Dashboard
             dbc.Col([ # Total launches
                 dbc.Card(
                     [
@@ -63,22 +113,14 @@ app.layout = html.Div(
                         dbc.CardBody(
                             html.Div(
                                 id = 'stats-total-launches'
-                            ),
+                        ),
                             style = {
                                 'textAlign': 'center',
                                 'font-size': '72px'
                             }
                         )
-                    ],
-                    style={
-                        'margin': '15px',
-                        'margin-bottom': '20px',
-                    }
-                )
-            ],
-                xs=6, sm=6, md=3, lg=3, xl=3
-            ),
-            dbc.Col([ # Success rate
+                    ]
+                ),
                 dbc.Card(
                     [
                         dbc.CardHeader(
@@ -96,16 +138,8 @@ app.layout = html.Div(
                                 'font-size': '72px'
                             }
                         )
-                    ],
-                    style={
-                        'margin': '15px',
-                        'margin-bottom': '20px',
-                    }
-                )
-            ],
-                xs=6, sm=6, md=3, lg=3, xl=3
-            ),
-            dbc.Col([ # Average payload mass
+                    ]
+                ),
                 dbc.Card(
                     [
                         dbc.CardHeader(
@@ -123,16 +157,8 @@ app.layout = html.Div(
                                 'font-size': '72px'
                             }
                         )
-                    ],
-                    style={
-                        'margin': '15px',
-                        'margin-bottom': '20px',
-                    }
-                )
-            ],
-                xs=6, sm=6, md=3, lg=3, xl=3
-            ),
-            dbc.Col([ # Latest launch
+                    ]
+                ),
                 dbc.Card(
                     [
                         dbc.CardHeader(
@@ -150,197 +176,56 @@ app.layout = html.Div(
                                 'font-size': '72px'
                             }
                         )
-                    ],
-                    style={
-                        'margin': '15px',
-                        'margin-bottom': '20px',
-                    }
+                    ]
                 )
-            ],
-                xs=6, sm=6, md=3, lg=3, xl=3
-            )
-        ]),
-        dbc.Row([ # Row 3 - Parameters board
+            ]),
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("Select launch site"),
-                    dbc.CardBody(
-                        html.Div(
-                            [
-                                html.Label("Select launch site"),
-                                dcc.Dropdown(
-                                    id = 'site-dropdown',
-                                        options = [
-                                        {'label': 'All Sites', 'value': 'ALL'}
-                                    ]+
-                                    [
-                                        {'label': i, 'value': i} for i in spacex_df['LaunchSite'].unique()
-                                    ],
-                                    value = 'ALL',
-                                    placeholder = 'Select a launch site',
-                                    searchable = True
-                                )
-                            ],
-                            style = {
-                                'padding': '3%',
-                                'font-size': 20
-                            }
-                        )
-                    )
-                ],
-                    style={
-                        'margin': '15px',
-                        'margin-bottom': '20px',
-                    }
-                )
-            ],
-            xs=12, sm=12, md=6, lg=6, xl=6
-            ),
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("Select year"),
-                    dbc.CardBody(
-                        html.Div([
-                            html.Label("Select year"),
-                            dcc.RangeSlider(
-                                id='year-slider',
-                                min = 2010, max = 2020, step = 1,
-                                value = [min_year, max_year],
-                                marks = {
-                                    2010: {'label': '2010', 'style': {'color': '#77b0b1'}},
-                                    **{i: {'label': str(i), 'value': i} for i in range(2011, 2020, 1)},
-                                    2020: {'label': '2020', 'style': {'color': '#f50'}}
-                                },
-                                tooltip = {
-                                    "placement": "bottom",
-                                    "always_visible": True
-                                }
-                            )
-                        ],
-                            style = {
-                                'padding': '3%',
-                                'font-size': 20
-                            }
-                        )
-                    )
-                ],
-                    style={
-                        'margin': '15px',
-                        'margin-bottom': '20px',
-                    }
-                )
-            ],
-            xs=12, sm=12, md=6, lg=6, xl=6
-            )
-        ]),
-        dbc.Row([ # Row 4 - Plot row A
-            # Left col    
-            dbc.Col([
-                dbc.Card(
-                    [
-                        dbc.CardHeader('Launch outcome by year'),
-                        dbc.CardBody(
-                                html.Div(
-                                    dcc.Graph(id='launch-success-bar-plot'), 
-                                )
-                        )
-                    ],
-                        style={
-                            'margin': '15px',
-                            'margin-bottom': '20px',
-                        }
-                )            
-            ],
-                xs=12, sm=12, md=6, lg=6, xl=6
-            ),
-            # Right col
-            dbc.Col([
-                dbc.Card(
-                    [
-                        dbc.CardHeader('Launch site by year'),
-                        dbc.CardBody(
-                                html.Div(
-                                    dcc.Graph(id='launch-site-bar-plot'), 
-                                )
-                        )
-                    ],
-                        style={
-                            'margin': '15px',
-                            'margin-bottom': '20px',
-                        }
-                )            
-            ],
-                xs=12, sm=12, md=6, lg=6, xl=6
-            )
-        ]),
-        dbc.Row([ # Row 5 - Plot row B
-            # Left col    
-            dbc.Col([
-                dbc.Card(
-                    [
-                        dbc.CardHeader('Success rate'),
-                        dbc.CardBody(
-                                html.Div(
-                                    dcc.Graph(id='success-pie-chart'), 
-                                )
-                        )
-                    ],
-                        style={
-                            'margin': '15px',
-                            'margin-bottom': '20px',
-                        }
-                )            
-            ],
-                xs=12, sm=12, md=6, lg=6, xl=6
-            ),
-            # Right col
-            dbc.Col([    
-                dbc.Card(
-                    [
-                    dbc.CardHeader('Correlation between Payload and Success rate'),
-                    dbc.CardBody(
-                        [
-                            # Payload graph
-                            html.Div(
-                                dcc.Graph(id='success-payload-scatter-chart'),
-                            ),
-                            html.Div([
-                                    html.Label("Payload range (Kg):"),
-                                    dcc.RangeSlider(
-                                        id='payload-slider',
-                                        min = 0, max = 15600, step = 5000,
-                                        value = [min_payload, max_payload],
-                                        marks = {
-                                            0: {'label': '0', 'style': {'color': '#77b0b1'}},
-                                            **{i: {'label': str(i), 'value': i} for i in range(0, 15600, 5000)},
-                                            15600: {'label': '15600', 'style': {'color': '#f50'}}
-                                        },
-                                        tooltip = {
-                                            "placement": "bottom",
-                                            "always_visible": True
-                                        }
-                                    )
-                                ],
-                                style = {
-                                    'padding': '3%',
-                                    'font-size': 20
-                                }
-                            )
-                        ]),
-                    ],
-                        style={
-                            'margin': '15px',
-                            'margin-bottom': '20px',
-                        }
-                )
-            ],
-                xs=12, sm=12, md=6, lg=6, xl=6,
-            )
-        ]),
 
+                        dbc.Card(
+                            [
+                                dbc.CardHeader('Launch outcome by year'),
+                                dbc.CardBody(
+                                        html.Div(
+                                            dcc.Graph(id='launch-success-bar-plot'), 
+                                        )
+                                )
+                            ]   
+                        ),
+                        dbc.Card(
+                            [
+                                dbc.CardHeader('Launch site by year'),
+                                dbc.CardBody(
+                                    html.Div(
+                                        dcc.Graph(id='launch-site-bar-plot'), 
+                                    )
+                                )
+                            ]
+                        )  
+            ]),
+            dbc.Col([   
+                        dbc.Card(
+                            [
+                                dbc.CardHeader('Success rate'),
+                                dbc.CardBody(
+                                        html.Div(
+                                            dcc.Graph(id='success-pie-chart'), 
+                                        )
+                                )
+                        ]),         
+                        dbc.Card(
+                            [
+                                dbc.CardHeader('Correlation between Payload and Success rate'),
+                                dbc.CardBody(
+                                    html.Div(
+                                        dcc.Graph(id='success-payload-scatter-chart'),
+                                    )
+                                ),
+                            ]
+                        )
+            ])
+        ])
     ]
 )
-
 
 # Callback for 2A. Stats - Total launches
 @app.callback(
@@ -547,12 +432,30 @@ def get_success_bar_plot(selected_site, selected_year):
             filter_df,
             x = 'Year',
             color = 'Class',
+            opacity = 0.7,
+            color_discrete_sequence = ['#F9EAE1','#43b2e5']
         )
         fig.update_layout(
-            xaxis_title = 'Total launch',
+            xaxis_title = 'Year',
+            yaxis_title = 'Launches',
             font = dict(color = 'white'),
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
             paper_bgcolor = 'rgba(0, 0, 0, 0)',
+            legend_traceorder = 'reversed',
+            legend_title = '',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.2,
+                xanchor="right",
+                x=0.15
+            )
+        )
+        fig.update_xaxes(
+            showgrid = False,
+        )
+        fig.update_yaxes(
+            showgrid = False,
         )
     else:
         filter_df = spacex_df[spacex_df['LaunchSite'] == selected_site]
@@ -567,12 +470,30 @@ def get_success_bar_plot(selected_site, selected_year):
             filter_df,
             x = 'Year',
             color = 'Class',
+            opacity = 0.7,
+            color_discrete_sequence = ['#F9EAE1','#43b2e5']
         )
         fig.update_layout(
-            xaxis_title = 'Total launch',
+            xaxis_title = 'Year',
+            yaxis_title = 'Launches',
             font = dict(color = 'white'),
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
             paper_bgcolor = 'rgba(0, 0, 0, 0)',
+            legend_traceorder = 'reversed',
+            legend_title = '',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.2,
+                xanchor="right",
+                x=0.15
+            )
+        )
+        fig.update_xaxes(
+            showgrid = False,
+        )
+        fig.update_yaxes(
+            showgrid = False,
         )
     return fig
  # return the outcomes piechart for a selected site
@@ -610,15 +531,35 @@ def get_site_area_plot(selected_site, selected_year):
             filter_df,
             x = 'Year',
             y = 'Count',
-            color = 'LaunchSite'
+            color = 'LaunchSite',
+            color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
         )
         fig.update_layout(
-            xaxis_title = 'Total launch',
+            xaxis_title = 'Year',
             yaxis_title = 'Launches',
-            legend_title = 'Site',
+            legend_title = '',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.2,
+                xanchor="right",
+                x=0.9
+            ),
             font = dict(color = 'white'),
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
             paper_bgcolor = 'rgba(0, 0, 0, 0)',
+            hovermode = 'x'
+        )
+        fig.update_traces(
+            hovertemplate = None
+        )
+        fig.update_xaxes(
+            showgrid = False,
+            zeroline = False
+        )
+        fig.update_yaxes(
+            showgrid = False,
+            zeroline = False
         )
     else:
         filter_df = spacex_df[spacex_df['LaunchSite'] == selected_site]
@@ -634,15 +575,35 @@ def get_site_area_plot(selected_site, selected_year):
             filter_df,
             x = 'Year',
             y = 'Count',
-            color = 'LaunchSite'
+            color = 'LaunchSite',
+            color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
         )
         fig.update_layout(
-            xaxis_title = 'Total launch',
+            xaxis_title = 'Year',
             yaxis_title = 'Launches',
-            legend_title = 'Site',
+            legend_title = '',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.2,
+                xanchor="right",
+                x=1
+            ),
             font = dict(color = 'white'),
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
             paper_bgcolor = 'rgba(0, 0, 0, 0)',
+            hovermode = 'x'
+        )
+        fig.update_traces(
+            hovertemplate = None
+        )
+        fig.update_xaxes(
+            showgrid = False,
+            zeroline = False
+        )
+        fig.update_yaxes(
+            showgrid = False,
+            zeroline = False
         )
     return fig
  # return the outcomes piechart for a selected site
@@ -680,13 +641,29 @@ def get_pie_chart(selected_site, selected_year):
         fig = px.pie(
             filter_df,
             values= 'Class',
-            names = 'LaunchSite'
+            names = 'LaunchSite',
+            color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1'],
+            opacity = 0.7,
         )
         fig.update_layout(
             font = dict(color = 'white'),
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
             paper_bgcolor = 'rgba(0, 0, 0, 0)',
+            legend_title = '',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.2,
+                xanchor="right",
+                x=0.85
+            ),
         )
+        fig.update_traces(
+            hovertemplate=
+                "<b>%{names}</b><br><br>" +
+                "Success launches: %{values:$,.0f}<br>" +
+                "<extra></extra>"
+            )
     else:
         filter_df = spacex_df[spacex_df['LaunchSite'] == selected_site]
         filter_df = filter_df[
@@ -702,13 +679,29 @@ def get_pie_chart(selected_site, selected_year):
         fig = px.pie(
             filter_df,
             values='count',
-            names='Class'
+            names='Class',
+            opacity = 0.7,
+            color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
         )
         fig.update_layout(
             font = dict(color = 'white'),
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
             paper_bgcolor = 'rgba(0, 0, 0, 0)',
+            legend_title = '',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.2,
+                xanchor="right",
+                x=0.85
+            ),
         )
+        fig.update_traces(
+            hovertemplate=
+                "<b>%{names}</b><br><br>" +
+                "Success time: %{values:$,.0f}<br>" +
+                "<extra></extra>"
+            )
     return fig
  # return the outcomes piechart for a selected site
 
@@ -724,71 +717,71 @@ def get_pie_chart(selected_site, selected_year):
             component_property = 'value'
         ),
         Input(
-            component_id = 'payload-slider',
-            component_property = 'value'
-        ),
-        Input(
             component_id = 'year-slider',
             component_property = 'value'
         )
     ]
 )
-def get_scatter_plot(selected_site, payload, selected_year):
+def get_scatter_plot(selected_site, selected_year):
     print(selected_site, selected_year)
     if selected_site == 'ALL':
         filter_df = spacex_df[
             (
-                spacex_df['PayloadMass'] >= int(payload[0])
+                spacex_df['Year'] >= str(selected_year[0])
             )&(
-                spacex_df['PayloadMass']<=int(payload[1])
-            )
-        ]
-        filter_df = filter_df[
-            (
-                filter_df['Year'] >= str(selected_year[0])
-            )&(
-                filter_df['Year'] <= str(selected_year[1])
+                spacex_df['Year'] <= str(selected_year[1])
             )
         ]
         fig = px.scatter(
             filter_df,
             x = 'PayloadMass', 
             y = 'Class',
-            color = 'Year'
+            color = 'Year',
+            color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
         )
         fig.update_layout(
             font = dict(color = 'white'),
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
             paper_bgcolor = 'rgba(0, 0, 0, 0)',
             yaxis = dict(tickvals = [0,1])
+        )
+        fig.update_xaxes(
+            showgrid = False,
+            zeroline = False
+        )
+        fig.update_yaxes(
+            showgrid = False,
+            zeroline = False
         )
     else:
         filter_df = spacex_df[spacex_df['LaunchSite'] == selected_site]
-        filter_df = filter_df[
+        filter_df = spacex_df[
             (
-                filter_df['PayloadMass'] >= int(payload[0])
+                spacex_df['Year'] >= str(selected_year[0])
             )&(
-                filter_df['PayloadMass'] <= int(payload[1])
-            )
-        ]
-        filter_df = filter_df[
-            (
-                filter_df['Year'] >= str(selected_year[0])
-            )&(
-                filter_df['Year'] <= str(selected_year[1])
+                spacex_df['Year'] <= str(selected_year[1])
             )
         ]
         fig = px.scatter(
             filter_df,
             x = 'PayloadMass', 
             y = 'Class',
-            color = 'Year'
+            color = 'Year',
+            color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
         )
         fig.update_layout(
             font = dict(color = 'white'),
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
             paper_bgcolor = 'rgba(0, 0, 0, 0)',
             yaxis = dict(tickvals = [0,1])
+        )
+        fig.update_xaxes(
+            showgrid = False,
+            zeroline = False
+        )
+        fig.update_yaxes(
+            showgrid = False,
+            zeroline = False
         )
     return fig
 
