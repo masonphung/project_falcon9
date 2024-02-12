@@ -11,8 +11,8 @@
 
 
 ## IMPORTANT !!
-- This original question & problem sets is initally a part of the IBM Data Science Specialization course. 
-- After completing the I refined and further developed the notebooks, the dashboard app as well as the machine learning section by adding extra integrations, new features and personalizations (Details below)
+- This original questions & problem sets are initally parts of the IBM Data Science Specialization capstone project. 
+- After completing the base project, I refined and further developed the notebooks, the dashboard app as well as the machine learning section by adding extra integrations, new features and personalizations (Details below)
 
 
 ## THE PROJECT COVERS
