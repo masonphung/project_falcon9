@@ -1,0 +1,5 @@
+dash
+pandas
+dash_mantine_components
+dash_bootstrap_components
+datetime

@@ -215,6 +215,11 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+header {
+  text-align: center;
+  font-size: 2vw;
+}
+
 hr {
   margin: 1rem 0;
   color: inherit;

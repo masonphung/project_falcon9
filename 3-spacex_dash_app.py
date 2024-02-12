@@ -34,184 +34,201 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # Create an app layout
 app.layout = html.Div(
     [
-        dbc.Row([ # Row 1 - Name of the dashboard
-            dbc.CardGroup([
-                dbc.Card([
-                    dbc.Col([
+        dbc.Row(# Row 1 - Name of the dashboard
+            [ 
+                dbc.Col(
+                    [
                         html.Header(
                             'SpaceX Launch Records Dashboard',
+                        ),
+                    
+                    ],
+                    className = ["Header"]
+                ),
+                dbc.Col([
+                    html.H5("Select site"),
+                    html.Div(
+                            [
+                                dcc.Dropdown(
+                                    id = 'site-dropdown',
+                                        options = [
+                                        {'label': 'All Sites', 'value': 'ALL'}
+                                    ]+
+                                    [
+                                        {'label': i, 'value': i} for i in spacex_df['LaunchSite'].unique()
+                                    ],
+                                    value = 'ALL',
+                                    placeholder = 'Select a launch site',
+                                    searchable = True
+                                )
+                            ],
                             style = {
-                                'textAlign': 'center',
-                                'font-size': '25px',
+                                'padding': '3%',
+                                'font-size': '20px'
                             }
-                        ),
-                    ])
+                    ),
                 ]),
-                dbc.Card([
-                    dbc.Col([
-                        html.Header("Select site"),
-                        html.Div(
-                                [
-                                    dcc.Dropdown(
-                                        id = 'site-dropdown',
-                                            options = [
-                                            {'label': 'All Sites', 'value': 'ALL'}
-                                        ]+
-                                        [
-                                            {'label': i, 'value': i} for i in spacex_df['LaunchSite'].unique()
-                                        ],
-                                        value = 'ALL',
-                                        placeholder = 'Select a launch site',
-                                        searchable = True
-                                    )
-                                ],
-                                style = {
-                                    'padding': '3%',
-                                    'font-size': 20
+                dbc.Col([
+                        html.H5("Select year"),
+                        html.Div([
+                            dcc.RangeSlider(
+                                id='year-slider',
+                                min = 2010, max = 2020, step = 1,
+                                value = [min_year, max_year],
+                                marks = {
+                                    2010: {'label': '2010', 'style': {'color': '#77b0b1'}},
+                                    **{i: {'label': str(i), 'value': i} for i in range(2011, 2020, 1)},
+                                    2020: {'label': '2020', 'style': {'color': '#fd7e14'}}
+                                },
+                                tooltip = {
+                                    "placement": "bottom",
+                                    "always_visible": True
                                 }
-                        ),
-                    ])
-                ]),
-                dbc.Card([
-                    dbc.Col([
-                            html.Header("Select year"),
-                            html.Div([
-                                dcc.RangeSlider(
-                                    id='year-slider',
-                                    min = 2010, max = 2020, step = 1,
-                                    value = [min_year, max_year],
-                                    marks = {
-                                        2010: {'label': '2010', 'style': {'color': '#77b0b1'}},
-                                        **{i: {'label': str(i), 'value': i} for i in range(2011, 2020, 1)},
-                                        2020: {'label': '2020', 'style': {'color': '#fd7e14'}}
-                                    },
-                                    tooltip = {
-                                        "placement": "bottom",
-                                        "always_visible": True
+                            )
+                        ],
+                            style = {
+                                'padding': '3%',
+                                'font-size': '20px'
+                            }
+                        )
+                ])
+            ], 
+            style= {
+                'align-items': 'center'
+            }
+        ),
+        dbc.Row(# Row 2 - Dashboard
+            [ 
+                dbc.Col(
+                    [  # Statistics
+                        dbc.Card(
+                            [
+                                dbc.CardHeader(
+                                    'Total launches',
+                                    style = {
+                                        'textAlign': 'center'
+                                    }
+                                ),
+                                dbc.CardBody(
+                                    html.Div(
+                                        id = 'stats-total-launches'
+                                ),
+                                    style = {
+                                        'textAlign': 'center',
+                                        'font-size': '3.2vw',
+                                        'align-items': 'center'
                                     }
                                 )
                             ],
-                                style = {
-                                    'padding': '3%',
-                                    'font-size': 20
-                                }
-                            )
-                    ])            
-                ])
-            ])
-        ]),
-        dbc.Row([ # Row 2 - Dashboard
-            dbc.Col([ # Total launches
-                dbc.Card(
-                    [
-                        dbc.CardHeader(
-                            'Total launches',
-                            style = {
-                                'textAlign': 'center'
-                            }
+                            className=["h-25"]
                         ),
-                        dbc.CardBody(
-                            html.Div(
-                                id = 'stats-total-launches'
+                        dbc.Card(
+                            [
+                                dbc.CardHeader(
+                                    'Success rate',
+                                    style = {
+                                        'textAlign': 'center'
+                                    }
+                                ),
+                                dbc.CardBody(
+                                    html.Div(
+                                        id = 'stats-success-rate'
+                                    ),
+                                    style = {
+                                        'textAlign': 'center',
+                                        'font-size': '3.2vw',
+                                        'align-items': 'center'
+                                    }
+                                )
+                            ],
+                            className=["h-25"]
                         ),
-                            style = {
-                                'textAlign': 'center',
-                                'font-size': '72px'
-                            }
+                        dbc.Card(
+                            [
+                                dbc.CardHeader(
+                                    'Average payload mass',
+                                    style = {
+                                        'textAlign': 'center'
+                                    }
+                                ),
+                                dbc.CardBody(
+                                    html.Div(
+                                        id = 'stats-avg-payload'
+                                    ),
+                                    style = {
+                                        'textAlign': 'center',
+                                        'font-size': '3.2vw',
+                                        'align-items': 'center'
+                                    }
+                                )
+                            ],
+                            className=["h-25"]
+                        ),
+                        dbc.Card(
+                            [
+                                dbc.CardHeader(
+                                    'Latest launch',
+                                    style = {
+                                        'textAlign': 'center'
+                                    }
+                                ),
+                                dbc.CardBody(
+                                    html.Div(
+                                        id = 'stats-latest-launch'
+                                    ),
+                                    style = {
+                                        'textAlign': 'center',
+                                        'font-size': '3.2vw',
+                                        'align-items': 'center',
+                                    }
+                                )
+                            ],
+                            className = ["h-25"]
                         )
-                    ]
+                    ],
+                    className = [
+                        'd-flex',
+                        'justify-content-between',
+                        'flex-column'
+                    ],
+                    xs=12, sm=12, md=2, lg=2, xl=2
                 ),
-                dbc.Card(
+                dbc.Col(
                     [
-                        dbc.CardHeader(
-                            'Success rate',
-                            style = {
-                                'textAlign': 'center'
-                            }
-                        ),
-                        dbc.CardBody(
-                            html.Div(
-                                id = 'stats-success-rate'
-                            ),
-                            style = {
-                                'textAlign': 'center',
-                                'font-size': '72px'
-                            }
-                        )
-                    ]
-                ),
-                dbc.Card(
-                    [
-                        dbc.CardHeader(
-                            'Average payload mass',
-                            style = {
-                                'textAlign': 'center'
-                            }
-                        ),
-                        dbc.CardBody(
-                            html.Div(
-                                id = 'stats-avg-payload'
-                            ),
-                            style = {
-                                'textAlign': 'center',
-                                'font-size': '72px'
-                            }
-                        )
-                    ]
-                ),
-                dbc.Card(
-                    [
-                        dbc.CardHeader(
-                            'Latest launch',
-                            style = {
-                                'textAlign': 'center'
-                            }
-                        ),
-                        dbc.CardBody(
-                            html.Div(
-                                id = 'stats-latest-launch'
-                            ),
-                            style = {
-                                'textAlign': 'center',
-                                'font-size': '72px'
-                            }
-                        )
-                    ]
-                )
-            ]),
-            dbc.Col([
-
                         dbc.Card(
                             [
                                 dbc.CardHeader('Launch outcome by year'),
                                 dbc.CardBody(
                                         html.Div(
-                                            dcc.Graph(id='launch-success-bar-plot'), 
+                                            dcc.Graph(id='launch-success-bar-plot')
                                         )
                                 )
-                            ]   
+                            ]
                         ),
                         dbc.Card(
                             [
                                 dbc.CardHeader('Launch site by year'),
                                 dbc.CardBody(
                                     html.Div(
-                                        dcc.Graph(id='launch-site-bar-plot'), 
+                                        dcc.Graph(id='launch-site-bar-plot')
                                     )
                                 )
                             ]
-                        )  
-            ]),
-            dbc.Col([   
+                        )
+                    ],
+                    xs=12, sm=12, md=5, lg=5, xl=5
+                ),
+                dbc.Col(
+                    [
                         dbc.Card(
                             [
                                 dbc.CardHeader('Success rate'),
                                 dbc.CardBody(
                                         html.Div(
-                                            dcc.Graph(id='success-pie-chart'), 
+                                            dcc.Graph(id='success-pie-chart'),
                                         )
                                 )
-                        ]),         
+                        ]),
                         dbc.Card(
                             [
                                 dbc.CardHeader('Correlation between Payload and Success rate'),
@@ -222,8 +239,11 @@ app.layout = html.Div(
                                 ),
                             ]
                         )
-            ])
-        ])
+                    ],
+                    xs=12, sm=12, md=5, lg=5, xl=5
+                )
+            ]
+        )
     ]
 )
 
@@ -306,7 +326,6 @@ def update_stats_success_rate(selected_site, selected_year):
             )
         ]
         success_rate = filter_df['Class'].mean()
-    
     return f'{success_rate:.1%}'
 
 
@@ -348,7 +367,7 @@ def update_stats_avg_payload(selected_site, selected_year):
             )
         ]
         avg_payload = filter_df['PayloadMass'].mean()
-    
+
     return f'{avg_payload:.0f} kg'
 
 
@@ -396,7 +415,7 @@ def update_stats_latest_launch(selected_site, selected_year):
         # Change all values in 'Date' into time data type
         latest_launch = pd.to_datetime(latest_launch)
         formatted_date = latest_launch.strftime('%Y-%m')
-    
+
     return f'{formatted_date}'
 
 
@@ -674,7 +693,7 @@ def get_pie_chart(selected_site, selected_year):
             )
         ]
         filter_df = pd.DataFrame(filter_df[['Class']].value_counts())
-        filter_df.reset_index(inplace=True) 
+        filter_df.reset_index(inplace=True)
         filter_df.columns=['Class','count']
         fig = px.pie(
             filter_df,
@@ -734,7 +753,7 @@ def get_scatter_plot(selected_site, selected_year):
         ]
         fig = px.scatter(
             filter_df,
-            x = 'PayloadMass', 
+            x = 'PayloadMass',
             y = 'Class',
             color = 'Year',
             color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
@@ -764,7 +783,7 @@ def get_scatter_plot(selected_site, selected_year):
         ]
         fig = px.scatter(
             filter_df,
-            x = 'PayloadMass', 
+            x = 'PayloadMass',
             y = 'Class',
             color = 'Year',
             color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
