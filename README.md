@@ -23,7 +23,7 @@
 - Building an interactive dashboard using `dash` and `plotly.express`
 - Train Machine Learning models to predict of future landing outcomes using classification techniques with `scikit-learn`
 
-![image](https://github.com/masonphung/project_falcon9/assets/131331827/6c73ee1d-1a29-4965-9bdd-23b84cf51830)
+![image](https://github.com/masonphung/project_falcon9/assets/131331827/11c3e7ac-fe07-4861-93fc-2dae37f74940)
 
 
 ## ADDED FEATURES
