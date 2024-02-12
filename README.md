@@ -28,10 +28,11 @@
 
 ## ADDED FEATURES
 ### Notebooks
-- Remove lengthy features, refine the code
+- Removed lengthy features, refine the code
+- Added step explanation, result comments to each section
 - Setting up local MySQL database (Originally IBM Skills Network Lab Environment)
 ### Dashboard app
-- Styling with `dash_bootstrap_components`, external css, responsive customized layout
+- Styled with `dash_bootstrap_components`, external css, responsive customized layout
 - Added multiple-inputs callbacks
 - Added extra plots, statistic summary, global attribute selection and year slider
   
