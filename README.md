@@ -28,6 +28,7 @@
 
 ## ADDED FEATURES
 ### Notebooks
+- Remove lengthy features, refine the code
 - Setting up local MySQL database (Originally IBM Skills Network Lab Environment)
 ### Dashboard app
 - Styling with `dash_bootstrap_components`, external css, responsive customized layout
