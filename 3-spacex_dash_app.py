@@ -222,7 +222,7 @@ app.layout = html.Div(
                     [
                         dbc.Card(
                             [
-                                dbc.CardHeader('Success rate'),
+                                dbc.CardHeader('Success launches of each site'),
                                 dbc.CardBody(
                                         html.Div(
                                             dcc.Graph(id='success-pie-chart'),
@@ -231,10 +231,10 @@ app.layout = html.Div(
                         ]),
                         dbc.Card(
                             [
-                                dbc.CardHeader('Correlation between Payload and Success rate'),
+                                dbc.CardHeader('Launch success percentage of each orbit'),
                                 dbc.CardBody(
                                     html.Div(
-                                        dcc.Graph(id='success-payload-scatter-chart'),
+                                        dcc.Graph(id='orbit-success-rate'),
                                     )
                                 ),
                             ]
@@ -242,7 +242,10 @@ app.layout = html.Div(
                     ],
                     xs=12, sm=12, md=5, lg=5, xl=5
                 )
-            ]
+            ],
+            style = {
+                'margin': '10px'
+            }
         )
     ]
 )
@@ -645,7 +648,7 @@ def get_site_area_plot(selected_site, selected_year):
     ],
     fluid = True
 )
-def get_pie_chart(selected_site, selected_year):
+def get_success_rate_pie_chart(selected_site, selected_year):
     print(selected_site, selected_year)
     if selected_site == 'ALL':
         filter_df = spacex_df[
@@ -678,11 +681,8 @@ def get_pie_chart(selected_site, selected_year):
             ),
         )
         fig.update_traces(
-            hovertemplate=
-                "<b>%{names}</b><br><br>" +
-                "Success launches: %{values:$,.0f}<br>" +
-                "<extra></extra>"
-            )
+            hovertemplate = None
+        )
     else:
         filter_df = spacex_df[spacex_df['LaunchSite'] == selected_site]
         filter_df = filter_df[
@@ -716,18 +716,15 @@ def get_pie_chart(selected_site, selected_year):
             ),
         )
         fig.update_traces(
-            hovertemplate=
-                "<b>%{names}</b><br><br>" +
-                "Success time: %{values:$,.0f}<br>" +
-                "<extra></extra>"
-            )
+            hovertemplate = None
+        )
     return fig
  # return the outcomes piechart for a selected site
 
-# Callback for 4B. scatter plot
+# Callback for 4B. orbit success rate
 @app.callback(
     Output(
-        component_id = 'success-payload-scatter-chart',
+        component_id = 'orbit-success-rate',
         component_property = 'figure'
     ),
     [
@@ -741,7 +738,7 @@ def get_pie_chart(selected_site, selected_year):
         )
     ]
 )
-def get_scatter_plot(selected_site, selected_year):
+def get_orbit_bar_plot(selected_site, selected_year):
     print(selected_site, selected_year)
     if selected_site == 'ALL':
         filter_df = spacex_df[
@@ -751,18 +748,27 @@ def get_scatter_plot(selected_site, selected_year):
                 spacex_df['Year'] <= str(selected_year[1])
             )
         ]
-        fig = px.scatter(
-            filter_df,
-            x = 'PayloadMass',
-            y = 'Class',
-            color = 'Year',
-            color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
+        orbit_success_rate = filter_df.groupby(filter_df["Orbit"])["Class"].mean().reset_index()
+        # Calculate success rate in percentage
+        orbit_success_rate["Class"] = orbit_success_rate["Class"]*100
+        # Filter the order of the data by success rate descendently
+        orbit_success_rate = orbit_success_rate.sort_values(
+            by = 'Class'
+        )
+        fig = px.bar(
+            orbit_success_rate,
+            x = 'Class',
+            y = 'Orbit',
+            color = 'Class',
+            color_continuous_scale = ['#fd7e14','#43b2e5'] #'#F9EAE1'
         )
         fig.update_layout(
             font = dict(color = 'white'),
+            yaxis_title = 'Orbit',
+            xaxis_title = 'Success rate (%)',
+            showlegend = False,
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
-            paper_bgcolor = 'rgba(0, 0, 0, 0)',
-            yaxis = dict(tickvals = [0,1])
+            paper_bgcolor = 'rgba(0, 0, 0, 0)'
         )
         fig.update_xaxes(
             showgrid = False,
@@ -771,28 +777,40 @@ def get_scatter_plot(selected_site, selected_year):
         fig.update_yaxes(
             showgrid = False,
             zeroline = False
+        )
+        fig.update_traces(
+            hovertemplate = None
         )
     else:
         filter_df = spacex_df[spacex_df['LaunchSite'] == selected_site]
-        filter_df = spacex_df[
+        filter_df = filter_df[
             (
-                spacex_df['Year'] >= str(selected_year[0])
+                filter_df['Year'] >= str(selected_year[0])
             )&(
-                spacex_df['Year'] <= str(selected_year[1])
+                filter_df['Year'] <= str(selected_year[1])
             )
         ]
-        fig = px.scatter(
-            filter_df,
-            x = 'PayloadMass',
-            y = 'Class',
-            color = 'Year',
-            color_discrete_sequence = ['#43b2e5','#fd7e14','#F9EAE1']
+        orbit_success_rate = filter_df.groupby(filter_df["Orbit"])["Class"].mean().reset_index()
+        # Calculate success rate in percentage
+        orbit_success_rate["Class"] = orbit_success_rate["Class"]*100
+        # Filter the order of the data by success rate descendently
+        orbit_success_rate = orbit_success_rate.sort_values(
+            by = 'Class'
+        )
+        fig = px.bar(
+            orbit_success_rate,
+            x = 'Class',
+            y = 'Orbit',
+            color = 'Class',
+            color_continuous_scale = ['#fd7e14','#43b2e5'] #'#F9EAE1'
         )
         fig.update_layout(
             font = dict(color = 'white'),
+            yaxis_title = 'Orbit',
+            xaxis_title = 'Success rate (%)',
+            showlegend = False,
             plot_bgcolor = 'rgba(0, 0, 0, 0)',
-            paper_bgcolor = 'rgba(0, 0, 0, 0)',
-            yaxis = dict(tickvals = [0,1])
+            paper_bgcolor = 'rgba(0, 0, 0, 0)'
         )
         fig.update_xaxes(
             showgrid = False,
@@ -801,6 +819,9 @@ def get_scatter_plot(selected_site, selected_year):
         fig.update_yaxes(
             showgrid = False,
             zeroline = False
+        )
+        fig.update_traces(
+            hovertemplate = None
         )
     return fig
 
