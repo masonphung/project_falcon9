@@ -9,9 +9,11 @@
 ![](https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DS0701EN-SkillsNetwork/lab_v2/images/landing_1.gif)
 ![](https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DS0701EN-SkillsNetwork/lab_v2/images/crash.gif)
 
+
 ## IMPORTANT !!
 - This original question & problem sets is initally a part of the IBM Data Science Specialization course. 
 - After completing the I refined and further developed the notebooks, the dashboard app as well as the machine learning section by adding extra integrations, new features and personalizations (Details below)
+
 
 ## THE PROJECT COVERS
 - `Python` programming
@@ -20,6 +22,9 @@
 - Exploratory analysis by visualization with `matplotlib` and `seaborn`
 - Building an interactive dashboard using `dash` and `plotly.express`
 - Train Machine Learning models to predict of future landing outcomes using classification techniques with `scikit-learn`
+
+![image](https://github.com/masonphung/project_falcon9/assets/131331827/6c73ee1d-1a29-4965-9bdd-23b84cf51830)
+
 
 ## ADDED FEATURES
 ### Notebooks
