@@ -9,19 +9,24 @@
 ![](https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DS0701EN-SkillsNetwork/lab_v2/images/landing_1.gif)
 ![](https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DS0701EN-SkillsNetwork/lab_v2/images/crash.gif)
 
-## OBJECTIVES
-- Discover insights of what affects the outcome of a launch mission, including technical and geographical grounds.
-- Build a classification ML model that can predict if the Falcon 9 first stage will land successfully.
-- Determine which ML model works the most accurate.
-- Conduct the project using Python programming language.
+## IMPORTANT !!
+- This original question & problem sets is initally a part of the IBM Data Science Specialization course. 
+- After completing the I refined and further developed the notebooks, the dashboard app as well as the machine learning section by adding extra integrations, new features and personalizations (Details below)
 
-## METHODOLOGY
+## THE PROJECT COVERS
+- `Python` programming
+- Data collection: API data collection w. `requests` and webscraping w. `BeautifulSoup`
+- Data wrangling with SQL using `mySQL`, `SQLalchemy`
+- Exploratory analysis by visualization with `matplotlib` and `seaborn`
+- Building an interactive dashboard using `dash` and `plotly.express`
+- Train Machine Learning models to predict of future landing outcomes using classification techniques with `scikit-learn`
 
-- There will be 2 datasets used in the project, Falcon9 launch data will be pulled from SpaceX REST API and the launch records will be scraped from Wikipedia
-- Data will then be wrangled, visualized and queried with SQL through for exploratory descriptive analysis
-- An interactive dashboard will be built using `dash` and `plotly`
-- Finally, we will train Machine Learning models to predict of future landing outcomes using classification techniques with `scikit-learn`
+## ADDED FEATURES
+### Notebooks
+- Setting up local MySQL database (Originally IBM Skills Network Lab Environment)
+### Dashboard app
+- Styling with `dash_bootstrap_components`, external css, responsive customized layout
+- Added multiple-inputs callbacks
+- Added extra plots, statistic summary, global attribute selection and year slider
+  
 
-## NOTES
-- This project is a part of the IBM Data Science Specialization course.
-- The notebooks, dashboard app were further developed by Mason Phung.
