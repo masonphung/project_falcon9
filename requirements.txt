@@ -1,5 +1,14 @@
 dash
 pandas
+requests
+sys
+bs4
+re
+unicodedata
+matplotlib
+seaborn
+plotly.express
 dash_mantine_components
 dash_bootstrap_components
 datetime
+sklearn
