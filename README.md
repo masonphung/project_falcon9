@@ -18,7 +18,7 @@
 ## THE PROJECT COVERS
 - `Python` programming
 - Data collection: API data collection w. `requests` and webscraping w. `BeautifulSoup`
-- Data wrangling with SQL using `mySQL`, `SQLalchemy`
+- Data wrangling with SQL using local database `mySQL` and `SQLalchemy` toolkit for python
 - Exploratory analysis by visualization with `matplotlib` and `seaborn`
 - Building an interactive dashboard using `dash` and `plotly.express`
 - Train Machine Learning models to predict of future landing outcomes using classification techniques with `scikit-learn`
