@@ -28,9 +28,9 @@
 
 ## ADDED FEATURES
 ### Notebooks
-- Removed lengthy features, refine the code
+- Removed lengthy features, convert repeated functions into predefined functions
 - Added step explanation, result comments to each section
-- Setting up local MySQL database (Originally IBM Skills Network Lab Environment)
+- Setting up and work with SQL in a local MySQL database (Originally IBM Skills Network Lab Environment)
 ### Dashboard app
 - Styled with `dash_bootstrap_components`, external css, responsive customized layout
 - Added multiple-inputs callbacks
