@@ -8,7 +8,7 @@ import plotly.express as px
 from datetime import datetime
 
 # Read the launch data into pandas dataframe
-spacex_df = pd.read_csv("dataset/dataset_part_2_wrangle.csv")
+spacex_df = pd.read_csv("dataset/falcon9_technical.csv")
 
 # Determine max and min year for year slider
 year = []
