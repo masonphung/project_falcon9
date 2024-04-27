@@ -39,7 +39,7 @@
 - Added multiple-inputs callbacks
 - Added extra plots, statistic summary, global attribute selection and year slider
 
-## LATEST UPDATES: ver 2.0
+## <span style="color:#ff9933">LATEST UPDATES: ver 2.0</span>
 - Remove separate notebooks, combine all parts of the project into a single jupyter notebook (the dash app is still in a separate .py file).
 - Refine data cleaning part, add new cleaning features so we can use the collected data to all parts of the projects (Originally, later parts used pre-cleaned data, not the data that we collected in the beginning).
 - Remove multiple excess datasets, only use original datasets from collected.
