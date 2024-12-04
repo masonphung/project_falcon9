@@ -1,4 +1,4 @@
-# **Mini Project: Data Analysis and Prediction of SpaceX Falcon9 rocket landing**
+# **Mini Project: Data Analysis and Prediction of SpaceX Falcon9 rocket launches**
 
 ## INTRODUCTION
 
